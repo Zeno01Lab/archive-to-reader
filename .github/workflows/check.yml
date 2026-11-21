@@ -1,0 +1,50 @@
+name: Check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ['3.10', '3.13']
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Check Python and run tests
+        shell: bash
+        run: |
+          python -m compileall -q .
+          python -m unittest discover -s . -p 'test*.py' -v
+          python -m unittest discover -s reader -p 'test*.py' -v
+          if [ -d bridge/tests ]; then
+            (cd bridge && python -m unittest discover -s tests -p 'test*.py' -v)
+          fi
+      - name: Check demo catalog
+        run: python -B reader/server.py --demo --catalog-stats
+      - name: Check browser JavaScript
+        run: node --check reader/app.js
+      - name: Check Windows launch scripts
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Get-ChildItem -LiteralPath scripts -Filter '*.ps1' | ForEach-Object {
+            $parserErrors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$null, [ref]$parserErrors)
+            if ($parserErrors) { throw ($parserErrors -join [Environment]::NewLine) }
+          }

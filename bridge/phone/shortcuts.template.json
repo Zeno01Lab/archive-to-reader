@@ -1,0 +1,114 @@
+{
+  "version": 92,
+  "compatibilityVersion": 90,
+  "title": "Clipping Cabinet · 剪报夹",
+  "categories": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "name": "Clipping Cabinet · 剪报夹",
+      "shortcuts": [
+        {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "name": "Share to Codex / 分享给 Codex",
+          "description": "Send shared text to the desktop inbox. A receipt confirms it was saved there. 将分享文字送到电脑，收到回执表示已保存。",
+          "method": "POST",
+          "url": "{{00000000-0000-4000-8000-000000000004}}/inbox",
+          "requestBodyType": "custom_text",
+          "contentType": "text/plain; charset=utf-8",
+          "bodyContent": "{{00000000-0000-4000-8000-000000000007}}",
+          "timeout": 15000,
+          "waitForInternet": false,
+          "followRedirects": false,
+          "acceptCookies": false,
+          "launcherShortcut": true,
+          "headers": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{00000000-0000-4000-8000-000000000005}}"
+            },
+            {
+              "key": "X-Request-ID",
+              "value": "{{00000000-0000-4000-8000-000000000006}}"
+            }
+          ],
+          "responseHandling": {
+            "uiType": "window",
+            "successOutput": "response",
+            "failureOutput": "detailed",
+            "includeMetaInfo": false,
+            "monospace": false
+          }
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000003",
+          "name": "Send copied text / 复制后发给 Codex",
+          "description": "Copy the shared text, then tap this shortcut to send it to the desktop inbox. 先复制分享文字，再点击发送。",
+          "method": "POST",
+          "url": "{{00000000-0000-4000-8000-000000000004}}/inbox",
+          "requestBodyType": "custom_text",
+          "contentType": "text/plain; charset=utf-8",
+          "bodyContent": "{{00000000-0000-4000-8000-000000000008}}",
+          "timeout": 15000,
+          "waitForInternet": false,
+          "followRedirects": false,
+          "acceptCookies": false,
+          "launcherShortcut": true,
+          "headers": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{00000000-0000-4000-8000-000000000005}}"
+            },
+            {
+              "key": "X-Request-ID",
+              "value": "{{00000000-0000-4000-8000-000000000006}}"
+            }
+          ],
+          "responseHandling": {
+            "uiType": "window",
+            "successOutput": "response",
+            "failureOutput": "detailed",
+            "includeMetaInfo": false,
+            "monospace": false
+          }
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "id": "00000000-0000-4000-8000-000000000004",
+      "key": "pb_endpoint",
+      "type": "constant",
+      "value": "http://REPLACE_WITH_PC_LAN_IP:18765"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000005",
+      "key": "pb_token",
+      "type": "constant",
+      "value": "REPLACE_WITH_PAIRING_TOKEN",
+      "isSecret": true,
+      "isExcludeValueFromExport": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000006",
+      "key": "pb_request_id",
+      "type": "uuid"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000007",
+      "key": "pb_share_text",
+      "type": "text",
+      "title": "Paste shared text / 粘贴分享文字",
+      "message": "Paste a link or excerpt if you opened the shortcut directly. 直接打开时可粘贴链接或节选。",
+      "isShareText": true,
+      "isShareTitle": false,
+      "isMultiline": true,
+      "rememberValue": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000008",
+      "key": "pb_clipboard",
+      "type": "clipboard"
+    }
+  ]
+}
